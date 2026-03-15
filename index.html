@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,6 +181,27 @@
     }
     .form-control:focus { outline: none; border-color: var(--accent); }
     textarea.form-control { resize: vertical; min-height: 120px; }
+
+    /* Form Status Messages */
+    .form-status {
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      display: none;
+    }
+    .form-status.success {
+      display: block;
+      background: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+    .form-status.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
 
     /* Footer */
     footer { padding: 60px 0 40px; background: var(--bg-dark); border-top: 1px solid var(--border); color: var(--text-muted); }
@@ -370,30 +392,31 @@
 
       <div class="contact-form">
         <h3 style="margin-bottom: 24px;">Request Service</h3>
-        <form action="#" method="POST" id="bookingForm">
+        <form action="https://formspree.io/f/xkoqzval" method="POST" id="bookingForm">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" class="form-control" placeholder="Your full name" required>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
           </div>
           <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div>
               <label for="phone">Phone</label>
-              <input type="tel" id="phone" class="form-control" placeholder="Phone number" required>
+              <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone number" required>
             </div>
             <div>
               <label for="location">City / Zip Code</label>
-              <input type="text" id="location" class="form-control" placeholder="Where is the vehicle?" required>
+              <input type="text" id="location" name="location" class="form-control" placeholder="Where is the vehicle?" required>
             </div>
           </div>
           <div class="form-group">
             <label for="vehicle">Vehicle (Year, Make, Model)</label>
-            <input type="text" id="vehicle" class="form-control" placeholder="e.g. 2018 Toyota Camry" required>
+            <input type="text" id="vehicle" name="vehicle" class="form-control" placeholder="e.g. 2018 Toyota Camry" required>
           </div>
           <div class="form-group">
             <label for="concern">Describe the Concern</label>
-            <textarea id="concern" class="form-control" placeholder="Tell us what's happening or what service you need..." required></textarea>
+            <textarea id="concern" name="concern" class="form-control" placeholder="Tell us what's happening or what service you need..." required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Request</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%;">Submit Request</button>
+          <div id="formStatus" class="form-status"></div>
         </form>
       </div>
     </div>
@@ -457,6 +480,57 @@
         document.querySelector('.nav-links').style.display = 'none';
       }
     });
+
+    // Formspree AJAX Submission
+    const form = document.getElementById("bookingForm");
+    const status = document.getElementById("formStatus");
+    const submitBtn = document.getElementById("submitBtn");
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      
+      const data = new FormData(event.target);
+      
+      // Update UI to loading state
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Sending...";
+      status.className = "form-status";
+      status.innerText = "";
+
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
+          status.className = "form-status success";
+          form.reset();
+        } else {
+          return response.json().then(data => {
+            if (Object.hasOwn(data, 'errors')) {
+              status.innerText = data["errors"].map(error => error["message"]).join(", ");
+            } else {
+              status.innerText = "Oops! There was a problem submitting your form.";
+            }
+            status.className = "form-status error";
+          });
+        }
+      }).catch(error => {
+        status.innerText = "Oops! There was a problem submitting your form. Please check your connection and try again.";
+        status.className = "form-status error";
+      }).finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Request";
+      });
+    }
+    
+    form.addEventListener("submit", handleSubmit);
   </script>
 </body>
 </html>
+Pressing key...Getting DOM...Stopping...
+
+Stop Agent
