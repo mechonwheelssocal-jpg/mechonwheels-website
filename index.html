@@ -1,35 +1,49 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mech on Wheels | Professional Mobile Diagnostics & Repair</title>
-  <meta name="description" content="Mech on Wheels provides professional mobile mechanic services, accurate diagnostics, and quality repairs throughout Southern California." />
+  <meta name="description"
+    content="Mech on Wheels provides professional mobile mechanic services, accurate diagnostics, and quality repairs throughout Southern California." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <style>
     /* Reset & Base Styles */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --bg-dark: #0a0a0f;
       --bg-card: #13131a;
       --bg-alt: #1a1a24;
-      --text-main: #fefce8;     /* Warm off-white to complement purple */
+      --text-main: #fefce8;
+      /* Warm off-white to complement purple */
       --text-muted: #cbd5e1;
-      --text-heading: #fde047;  /* Bright yellow to provide strong contrast */
-      --accent: #9333ea;       /* Bold Purple */
+      --text-heading: #fde047;
+      /* Bright yellow to provide strong contrast */
+      --accent: #9333ea;
+      /* Bold Purple */
       --accent-hover: #a855f7;
-      --accent-second: #fbbf24; /* Bold Yellow */
-      --border: rgba(255,255,255,0.07);
-      --border-light: rgba(255,255,255,0.15);
+      --accent-second: #fbbf24;
+      /* Bold Yellow */
+      --border: rgba(255, 255, 255, 0.07);
+      --border-light: rgba(255, 255, 255, 0.15);
       --radius: 8px;
       --transition: all 0.2s ease-in-out;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -40,147 +54,379 @@
     }
 
     /* Typography */
-    h1, h2, h3, h4 { font-weight: 700; color: var(--text-heading); line-height: 1.2; }
-    p { margin-bottom: 1rem; color: var(--text-muted); font-size: 1.05rem; }
-    
-    .text-accent { color: var(--accent); }
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-weight: 700;
+      color: var(--text-heading);
+      line-height: 1.2;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .text-accent {
+      color: var(--accent);
+    }
+
     .uppercase-label {
-      font-size: 0.85rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 2px; color: var(--accent-second); margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent-second);
+      margin-bottom: 0.75rem;
       display: block;
     }
 
     /* Utility */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-    .section { padding: 100px 0; }
-    .section-alt { background-color: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    .section {
+      padding: 100px 0;
+    }
+
+    .section-alt {
+      background-color: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
     /* Buttons */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 14px 32px; font-weight: 800; font-size: 1rem;
-      border-radius: 50px; text-decoration: none; border: none;
-      cursor: pointer; transition: transform .2s, box-shadow .2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 32px;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
     }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-second));
       color: #000;
       box-shadow: 0 8px 32px rgba(147, 51, 234, 0.4);
     }
-    .btn-primary:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 16px 48px rgba(147, 51, 234, 0.55); 
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(147, 51, 234, 0.55);
     }
+
     .btn-secondary {
-      background-color: transparent; color: var(--text-main);
+      background-color: transparent;
+      color: var(--text-main);
       border: 1px solid var(--border-light);
     }
-    .btn-secondary:hover { 
-      border-color: var(--accent); 
-      background: rgba(249,115,22,0.05);
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: rgba(249, 115, 22, 0.05);
     }
 
     /* Nav */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(18, 20, 24, 0.95); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border); padding: 20px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(18, 20, 24, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
     }
-    .nav-container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: #fff; letter-spacing: -0.5px; }
-    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
-    .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: var(--transition); }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-cta { background: var(--text-main); color: var(--bg-dark) !important; padding: 8px 20px; border-radius: var(--radius); font-weight: 600; }
-    .nav-cta:hover { background: #fff; transform: translateY(-1px); }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      background: var(--text-main);
+      color: var(--bg-dark) !important;
+      padding: 8px 20px;
+      border-radius: var(--radius);
+      font-weight: 600;
+    }
+
+    .nav-cta:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
 
     /* Mobile Menu Placeholder (Hidden on Desktop) */
-    .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
 
     /* Hero */
     .hero {
       padding: 180px 0 120px;
-      min-height: 90vh; display: flex; align-items: center;
-      background: radial-gradient(circle at center top, rgba(58,130,246,0.1) 0%, transparent 60%),
-                  linear-gradient(to bottom, var(--bg-dark), var(--bg-alt));
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      background: radial-gradient(circle at center top, rgba(58, 130, 246, 0.1) 0%, transparent 60%),
+        linear-gradient(to bottom, var(--bg-dark), var(--bg-alt));
       border-bottom: 1px solid var(--border);
     }
-    .hero-content { max-width: 800px; }
-    .hero-title { font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -1.5px; margin-bottom: 24px; }
-    .hero-subtitle { font-size: clamp(1.1rem, 2vw, 1.25rem); max-width: 650px; margin-bottom: 40px; color: var(--text-muted); }
-    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .hero-content {
+      max-width: 800px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.25rem);
+      max-width: 650px;
+      margin-bottom: 40px;
+      color: var(--text-muted);
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
     /* About Section */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
     .about-image {
-      width: 100%; height: 400px;
-      object-fit: contain; /* Prevents the image from being cut off */
-      border-radius: var(--radius); 
-      background: var(--bg-card); /* Add dark background behind contained image */
-      border: 2px solid var(--accent); /* Matches the purple outline */
-      box-shadow: 0 8px 32px rgba(147, 51, 234, 0.25); /* Subtle purple glow */
+      width: 100%;
+      height: 400px;
+      object-fit: contain;
+      /* Prevents the image from being cut off */
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      /* Add dark background behind contained image */
+      border: 2px solid var(--accent);
+      /* Matches the purple outline */
+      box-shadow: 0 8px 32px rgba(147, 51, 234, 0.25);
+      /* Subtle purple glow */
       padding: 1rem;
       transition: var(--transition);
     }
+
     .about-image:hover {
-      box-shadow: 0 16px 48px rgba(147, 51, 234, 0.5); /* Intense purple glow on hover */
-      transform: translateY(-4px); /* Slight lift on hover */
+      box-shadow: 0 16px 48px rgba(147, 51, 234, 0.5);
+      /* Intense purple glow on hover */
+      transform: translateY(-4px);
+      /* Slight lift on hover */
     }
 
     /* Services Section */
-    .services-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .services-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 60px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
     .service-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
       transition: var(--transition);
     }
-    .service-card:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .service-card h3 { font-size: 1.25rem; margin-bottom: 12px; }
-    .service-card p { font-size: 0.95rem; margin-bottom: 0; }
+
+    .service-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      font-size: 0.95rem;
+      margin-bottom: 0;
+    }
+
     .diagnostic-notice {
-      background: rgba(58,130,246,0.08); border-left: 4px solid var(--accent);
-      padding: 16px 24px; border-radius: 0 var(--radius) var(--radius) 0;
-      margin-top: 40px; font-weight: 500; color: #fff;
+      background: rgba(58, 130, 246, 0.08);
+      border-left: 4px solid var(--accent);
+      padding: 16px 24px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-top: 40px;
+      font-weight: 500;
+      color: #fff;
     }
 
     /* Why Choose Us & How it Works grids */
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
-    .feature-item h3 { font-size: 1.15rem; margin-bottom: 8px; color: #fff; }
-    
-    .step-card {
-      text-align: left; padding: 32px; background: var(--bg-dark);
-      border: 1px solid var(--border); border-radius: var(--radius);
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
     }
+
+    .feature-item h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .step-card {
+      text-align: left;
+      padding: 32px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
     .step-num {
-      display: inline-flex; width: 40px; height: 40px; background: var(--accent);
-      color: #fff; font-weight: 700; align-items: center; justify-content: center;
-      border-radius: 50%; margin-bottom: 20px; font-size: 1.2rem;
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
     }
 
     /* Service Area Banner */
     .area-banner {
-      background: var(--bg-card); border: 1px solid var(--border);
-      padding: 40px; border-radius: var(--radius); text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 40px;
+      border-radius: var(--radius);
+      text-align: center;
     }
 
     /* Contact / CTA */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-    .contact-info-block { margin-bottom: 32px; }
-    .contact-info-block h4 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
-    .contact-info-block p, .contact-info-block a { font-size: 1.1rem; color: #fff; text-decoration: none; }
-    
-    .contact-form { background: var(--bg-card); padding: 40px; border-radius: var(--radius); border: 1px solid var(--border); }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+
+    .contact-info-block {
+      margin-bottom: 32px;
+    }
+
+    .contact-info-block h4 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .contact-info-block p,
+    .contact-info-block a {
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .contact-form {
+      background: var(--bg-card);
+      padding: 40px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
     .form-control {
-      width: 100%; padding: 14px 16px; background: var(--bg-dark);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      color: #fff; font-family: 'Inter', sans-serif; font-size: 1rem;
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
       transition: var(--transition);
     }
-    .form-control:focus { outline: none; border-color: var(--accent); }
-    textarea.form-control { resize: vertical; min-height: 120px; }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
 
     /* Form Status Messages */
     .form-status {
@@ -190,12 +436,14 @@
       font-size: 0.95rem;
       display: none;
     }
+
     .form-status.success {
       display: block;
       background: rgba(34, 197, 94, 0.1);
       color: #4ade80;
       border: 1px solid rgba(34, 197, 94, 0.2);
     }
+
     .form-status.error {
       display: block;
       background: rgba(239, 68, 68, 0.1);
@@ -204,24 +452,69 @@
     }
 
     /* Footer */
-    footer { padding: 60px 0 40px; background: var(--bg-dark); border-top: 1px solid var(--border); color: var(--text-muted); }
-    .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 40px; }
-    .footer-brand { max-width: 300px; }
-    .footer-brand p { font-size: 0.9rem; margin-top: 16px; }
-    .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; font-size: 0.85rem; }
+    footer {
+      padding: 60px 0 40px;
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand {
+      max-width: 300px;
+    }
+
+    .footer-brand p {
+      font-size: 0.9rem;
+      margin-top: 16px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
 
     /* Responsive */
     @media (max-width: 900px) {
-      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .hero-title { font-size: 2.8rem; }
+
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-title {
+        font-size: 2.8rem;
+      }
     }
+
     @media (max-width: 768px) {
-      .nav-links { display: none; } /* Add JS for mobile menu in production */
-      .menu-toggle { display: block; }
-      .section { padding: 80px 0; }
+      .nav-links {
+        display: none;
+      }
+
+      /* Add JS for mobile menu in production */
+      .menu-toggle {
+        display: block;
+      }
+
+      .section {
+        padding: 80px 0;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- NAVIGATION -->
@@ -245,7 +538,8 @@
         <span class="uppercase-label">Mobile Mechanic Services in Southern California</span>
         <h1 class="hero-title">Accurate Diagnostics.<br>Quality Repairs.<br>Convenient Service.</h1>
         <p class="hero-subtitle">
-          Professional mobile diagnostic and repair services brought directly to you. Mech on Wheels specializes in real solutions, not guesswork—providing dealership-level troubleshooting and honest mechanical repairs.
+          Professional mobile diagnostic and repair services brought directly to you. Mech on Wheels specializes in real
+          solutions, not guesswork—providing dealership-level troubleshooting and honest mechanical repairs.
         </p>
         <div class="hero-btns">
           <a href="#contact" class="btn btn-primary">Request Service</a>
@@ -262,13 +556,18 @@
         <span class="uppercase-label">The Business</span>
         <h2>Skilled Troubleshooting Delivered to Your Door</h2>
         <p>
-          Mech on Wheels is an independent mobile mechanic service built around accurate diagnostics, quality workmanship, and transparent communication. 
+          Mech on Wheels is an independent mobile mechanic service built around accurate diagnostics, quality
+          workmanship, and transparent communication.
         </p>
         <p>
-          We know the frustration of being overcharged or dealing with "parts swappers." Our approach is diagnostic-first, emphasizing OEM-minded procedures whenever possible. From simple maintenance to deeper drivability and no-start concerns, we provide clear documentation of findings and honest recommendations before any wrench is turned.
+          We know the frustration of being overcharged or dealing with "parts swappers." Our approach is
+          diagnostic-first, emphasizing OEM-minded procedures whenever possible. From simple maintenance to deeper
+          drivability and no-start concerns, we provide clear documentation of findings and honest recommendations
+          before any wrench is turned.
         </p>
         <p>
-          Skip the tow truck and the waiting room. We bring professional capability and real answers directly to your vehicle's location.
+          Skip the tow truck and the waiting room. We bring professional capability and real answers directly to your
+          vehicle's location.
         </p>
         <div style="margin-top: 32px;">
           <ul style="list-style: none; padding: 0;">
@@ -294,13 +593,15 @@
       <div class="services-header">
         <span class="uppercase-label">Capabilities</span>
         <h2>Professional Mechanical Services</h2>
-        <p>Broad mechanical capability handled with precision. From complex electrical troubleshooting to scheduled maintenance.</p>
+        <p>Broad mechanical capability handled with precision. From complex electrical troubleshooting to scheduled
+          maintenance.</p>
       </div>
 
       <div class="services-grid">
         <div class="service-card">
           <h3>Advanced Diagnostics</h3>
-          <p>No-start conditions, drivability concerns, check engine lights, and electrical diagnostics. We find the root cause.</p>
+          <p>No-start conditions, drivability concerns, check engine lights, and electrical diagnostics. We find the
+            root cause.</p>
         </div>
         <div class="service-card">
           <h3>Starting & Charging</h3>
@@ -316,7 +617,8 @@
         </div>
         <div class="service-card">
           <h3>Cooling Systems</h3>
-          <p>Radiators, water pumps, thermostats, and leak diagnostics to keep your engine running at the proper temperature.</p>
+          <p>Radiators, water pumps, thermostats, and leak diagnostics to keep your engine running at the proper
+            temperature.</p>
         </div>
         <div class="service-card">
           <h3>General Maintenance</h3>
@@ -325,7 +627,8 @@
       </div>
 
       <div class="diagnostic-notice">
-        <strong>Our Philosophy:</strong> Proper diagnosis saves time, money, and unnecessary parts replacement. We test, we don't guess.
+        <strong>Our Philosophy:</strong> Proper diagnosis saves time, money, and unnecessary parts replacement. We test,
+        we don't guess.
       </div>
     </div>
   </section>
@@ -360,7 +663,8 @@
       <div class="area-banner">
         <h3 style="margin-bottom: 12px; font-size: 1.5rem;">Serving Southern California</h3>
         <p style="margin-bottom: 0; max-width: 600px; margin: 0 auto;">
-          Providing dependable mobile mechanic and diagnostic services across <strong>Orange County</strong>, <strong>Los Angeles County</strong>, and surrounding areas.
+          Providing dependable mobile mechanic and diagnostic services across <strong>Orange County</strong>,
+          <strong>Los Angeles County</strong>, and surrounding areas.
         </p>
       </div>
     </div>
@@ -373,9 +677,10 @@
         <span class="uppercase-label">Get in Touch</span>
         <h2 style="margin-bottom: 24px; font-size: 2.5rem;">Ready for Real Answers?</h2>
         <p style="margin-bottom: 40px; max-width: 450px;">
-          Contact Mech on Wheels today for diagnostics, repair quotes, and scheduling. We are here to provide clear communication and professional service.
+          Contact Mech on Wheels today for diagnostics, repair quotes, and scheduling. We are here to provide clear
+          communication and professional service.
         </p>
-        
+
         <div class="contact-info-block">
           <h4>Phone</h4>
           <a href="tel:7147244696">(714) 724-4696</a>
@@ -404,16 +709,49 @@
             </div>
             <div>
               <label for="location">City / Zip Code</label>
-              <input type="text" id="location" name="location" class="form-control" placeholder="Where is the vehicle?" required>
+              <input type="text" id="location" name="location" class="form-control" placeholder="Where is the vehicle?"
+                required>
             </div>
           </div>
-          <div class="form-group">
-            <label for="vehicle">Vehicle (Year, Make, Model)</label>
-            <input type="text" id="vehicle" name="vehicle" class="form-control" placeholder="e.g. 2018 Toyota Camry" required>
+          <div class="form-group" style="background: rgba(255,255,255,0.03); padding: 24px; border-radius: var(--radius); border: 1px solid var(--border);">
+            <label style="margin-bottom: 16px; display: block; font-size: 0.95rem; color: #fff;">Vehicle Information</label>
+            
+            <div style="display: flex; gap: 24px; margin-bottom: 20px; flex-wrap: wrap;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="_vehicle_type" value="dropdowns" checked onchange="toggleVehicleInput()"> 
+                Select Vehicle
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="_vehicle_type" value="vin" onchange="toggleVehicleInput()"> 
+                Enter VIN Instead
+              </label>
+            </div>
+
+            <!-- Dropdown Section -->
+            <div id="vehicle-dropdowns" style="display: flex; flex-wrap: wrap; gap: 12px;">
+              <select id="vehicleYear" class="form-control" onchange="updateMakes()" style="flex: 1; min-width: 80px;" required>
+                <option value="">Year</option>
+              </select>
+              <select id="vehicleMake" class="form-control" onchange="fetchModels()" style="flex: 1; min-width: 100px;" required disabled>
+                <option value="">Make</option>
+              </select>
+              <select id="vehicleModel" class="form-control" style="flex: 1; min-width: 100px;" required disabled>
+                <option value="">Model</option>
+              </select>
+            </div>
+
+            <!-- VIN Section -->
+            <div id="vehicle-vin" style="display: none;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
+            </div>
+
+            <input type="hidden" id="vehicleData" name="vehicle" value="">
           </div>
           <div class="form-group">
             <label for="concern">Describe the Concern</label>
-            <textarea id="concern" name="concern" class="form-control" placeholder="Tell us what's happening or what service you need..." required></textarea>
+            <textarea id="concern" name="concern" class="form-control"
+              placeholder="Tell us what's happening or what service you need..." required></textarea>
           </div>
           <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%;">Submit Request</button>
           <div id="formStatus" class="form-status"></div>
@@ -434,15 +772,21 @@
         <div>
           <h4 style="margin-bottom: 16px; font-size: 0.95rem;">Services</h4>
           <ul style="list-style: none; padding: 0;">
-            <li style="margin-bottom: 8px;"><a href="#services" style="color: var(--text-muted); text-decoration: none;">Diagnostics</a></li>
-            <li style="margin-bottom: 8px;"><a href="#services" style="color: var(--text-muted); text-decoration: none;">Electrical Repair</a></li>
-            <li style="margin-bottom: 8px;"><a href="#services" style="color: var(--text-muted); text-decoration: none;">Brakes & Suspension</a></li>
-            <li style="margin-bottom: 8px;"><a href="#services" style="color: var(--text-muted); text-decoration: none;">General Maintenance</a></li>
+            <li style="margin-bottom: 8px;"><a href="#services"
+                style="color: var(--text-muted); text-decoration: none;">Diagnostics</a></li>
+            <li style="margin-bottom: 8px;"><a href="#services"
+                style="color: var(--text-muted); text-decoration: none;">Electrical Repair</a></li>
+            <li style="margin-bottom: 8px;"><a href="#services"
+                style="color: var(--text-muted); text-decoration: none;">Brakes & Suspension</a></li>
+            <li style="margin-bottom: 8px;"><a href="#services"
+                style="color: var(--text-muted); text-decoration: none;">General Maintenance</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; <script>document.write(new Date().getFullYear())</script> Mech on Wheels. All rights reserved.</span>
+        <span>&copy;
+          <script>document.write(new Date().getFullYear())</script> Mech on Wheels. All rights reserved.
+        </span>
         <span>Southern California</span>
       </div>
     </div>
@@ -450,7 +794,7 @@
 
   <script>
     // Simple mobile menu toggle logic
-    document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('.menu-toggle').addEventListener('click', function () {
       const navLinks = document.querySelector('.nav-links');
       if (navLinks.style.display === 'flex') {
         navLinks.style.display = 'none';
@@ -468,7 +812,7 @@
     });
 
     // Handle window resize to reset menu
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
         document.querySelector('.nav-links').style.display = 'flex';
         document.querySelector('.nav-links').style.flexDirection = 'row';
@@ -486,11 +830,84 @@
     const status = document.getElementById("formStatus");
     const submitBtn = document.getElementById("submitBtn");
 
+    // -- VEHICLE SELECTION LOGIC --
+    const popularMakes = ["Acura", "Alfa Romeo", "Audi", "BMW", "Buick", "Cadillac", "Chevrolet", "Chrysler", "Dodge", "FIAT", "Ford", "Genesis", "GMC", "Honda", "Hyundai", "INFINITI", "Jaguar", "Jeep", "Kia", "Land Rover", "Lexus", "Lincoln", "Maserati", "Mazda", "Mercedes-Benz", "MINI", "Mitsubishi", "Nissan", "Porsche", "Ram", "Subaru", "Tesla", "Toyota", "Volkswagen", "Volvo"];
+    const yearSelect = document.getElementById("vehicleYear");
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear + 1; y >= 1990; y--) {
+      yearSelect.add(new Option(y, y));
+    }
+
+    function updateMakes() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+
+      if (yearSelect.value) {
+        popularMakes.forEach(make => makeSelect.add(new Option(make, make)));
+        makeSelect.disabled = false;
+      } else {
+        makeSelect.disabled = true;
+      }
+    }
+
+    async function fetchModels() {
+      const year = yearSelect.value;
+      const make = document.getElementById("vehicleMake").value;
+      const modelSelect = document.getElementById("vehicleModel");
+      
+      modelSelect.innerHTML = '<option value="">Loading Models...</option>';
+      modelSelect.disabled = true;
+
+      if (year && make) {
+        try {
+          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}/vehicleType/passenger%20car?format=json`);
+          const data = await res.json();
+          modelSelect.innerHTML = '<option value="">Model</option>';
+          if (data.Results && data.Results.length > 0) {
+            data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
+          } else {
+            modelSelect.add(new Option("Other (Not Listed)", "Other"));
+          }
+          modelSelect.disabled = false;
+        } catch(err) {
+          modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+          modelSelect.disabled = false;
+        }
+      }
+    }
+
+    function toggleVehicleInput() {
+      const isVin = document.querySelector('input[name="_vehicle_type"]:checked').value === "vin";
+      document.getElementById('vehicle-dropdowns').style.display = isVin ? "none" : "flex";
+      document.getElementById('vehicle-vin').style.display = isVin ? "block" : "none";
+      
+      document.getElementById('vehicleYear').required = !isVin;
+      document.getElementById('vehicleMake').required = !isVin;
+      document.getElementById('vehicleModel').required = !isVin;
+      document.getElementById('vinInput').required = isVin;
+    }
+
+    // Initialize logic
+    toggleVehicleInput();
+    // -- END VEHICLE LOGIC --
+
     async function handleSubmit(event) {
       event.preventDefault();
+
+      // Ensure form fields are passed dynamically to the hidden vehicle input for Formspree
+      const isVin = document.querySelector('input[name="_vehicle_type"]:checked').value === "vin";
+      if (isVin) {
+        document.getElementById("vehicleData").value = "VIN: " + document.getElementById("vinInput").value.toUpperCase();
+      } else {
+        document.getElementById("vehicleData").value = document.getElementById("vehicleYear").value + " " + document.getElementById("vehicleMake").value + " " + document.getElementById("vehicleModel").value;
+      }
       
       const data = new FormData(event.target);
-      
+
       // Update UI to loading state
       submitBtn.disabled = true;
       submitBtn.innerText = "Sending...";
@@ -526,11 +943,11 @@
         submitBtn.innerText = "Submit Request";
       });
     }
-    
+
     form.addEventListener("submit", handleSubmit);
   </script>
 </body>
-</html>
-Pressing key...Getting DOM...Stopping...
 
-Stop Agent
+</html>
+<!-- continue where we left off
+  -->
