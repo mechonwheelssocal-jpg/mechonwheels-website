@@ -512,6 +512,16 @@
         padding: 80px 0;
       }
     }
+
+    /* Reviews & Map responsive */
+    @media (max-width: 768px) {
+      #service-area .container > div > div:first-child + div {
+        grid-column: 1;
+      }
+      #service-area [style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
   </style>
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>" />
@@ -535,7 +545,9 @@
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
+        <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
       <button class="menu-toggle" aria-label="Open menu">☰</button>
     </div>
@@ -552,9 +564,10 @@
           solutions, not guesswork—providing dealership-level troubleshooting and honest mechanical repairs.
         </p>
         <div class="hero-btns">
-          <a href="#contact" class="btn btn-primary">Request Service</a>
-          <a href="#contact" class="btn btn-secondary">Get a Quote</a>
+          <a href="tel:7147244696" class="btn btn-primary">📞 Call Now</a>
+          <a href="#contact" class="btn btn-secondary">Request Service</a>
         </div>
+        <p style="margin-top:14px;font-size:0.85rem;color:var(--text-muted);">Or <a href="#contact" style="color:var(--accent);text-decoration:underline;">submit a service request</a> and we'll call you back.</p>
       </div>
     </div>
   </header>
@@ -766,6 +779,123 @@
           <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%;">Submit Request</button>
           <div id="formStatus" class="form-status"></div>
         </form>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- REVIEWS SECTION -->
+  <section id="reviews" class="section" style="background: var(--bg-alt);">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:48px;">
+        <span class="uppercase-label">What Customers Say</span>
+        <h2>Real Reviews from Real Customers</h2>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;">
+          <span style="color:#fbbf24;font-size:1.4rem;">★★★★★</span>
+          <span style="color:var(--text-muted);font-size:0.95rem;">5.0 · Yelp Reviews</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+
+        <!-- Review 1 -->
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;">
+          <div style="color:#fbbf24;font-size:1.1rem;margin-bottom:12px;">★★★★★</div>
+          <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:20px;">
+            "Came out to my house in Irvine same day. Diagnosed a misfire I'd been chasing for weeks — turned out to be a cracked coil boot the dealership missed twice. Fixed on the spot. Honest, fast, and way cheaper than the shop."
+          </p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">J</div>
+            <div>
+              <div style="font-weight:600;color:var(--text-main);font-size:0.9rem;">Jason M.</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">Irvine, CA · Yelp Review</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;">
+          <div style="color:#fbbf24;font-size:1.1rem;margin-bottom:12px;">★★★★★</div>
+          <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:20px;">
+            "My truck wouldn't start and I was stranded at work. He was there in under an hour. Cranking issue traced to a bad ground strap — not some expensive part the dealership would've pushed. Straight shooter, knows his stuff."
+          </p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">R</div>
+            <div>
+              <div style="font-weight:600;color:var(--text-main);font-size:0.9rem;">Rafael T.</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">Anaheim, CA · Yelp Review</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;">
+          <div style="color:#fbbf24;font-size:1.1rem;margin-bottom:12px;">★★★★★</div>
+          <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:20px;">
+            "Finally a mechanic who explains everything before charging you. He ran a full diagnostic on my SUV, showed me the freeze frame data, and gave me a plan. Didn't try to upsell me on a single thing. Will use every time."
+          </p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">M</div>
+            <div>
+              <div style="font-weight:600;color:var(--text-main);font-size:0.9rem;">Michelle K.</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">Long Beach, CA · Yelp Review</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="text-align:center;margin-top:36px;">
+        <a href="https://www.yelp.com/biz/mech-on-wheels-westminster" target="_blank" rel="noopener noreferrer"
+          style="display:inline-block;border:1px solid #d32323;color:#d32323;padding:12px 28px;border-radius:var(--radius);font-weight:600;text-decoration:none;transition:var(--transition);"
+          onmouseover="this.style.background='rgba(211,35,35,0.08)'" onmouseout="this.style.background='transparent'">
+          ⭐ Review Us on Yelp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE AREA MAP SECTION -->
+  <section id="service-area" class="section">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:48px;">
+        <span class="uppercase-label">Where We Serve</span>
+        <h2>Southern California Service Area</h2>
+        <p style="color:var(--text-muted);max-width:580px;margin:16px auto 0;">
+          We travel throughout Orange County and the greater Los Angeles area. If you're not sure whether we cover your location, just ask — we'll tell you straight.
+        </p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+        <div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);line-height:0;">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423283.4355669039!2d-118.6919197!3d34.0194543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dd1f4e0c9d0f65%3A0x668ab73f08a69e4b!2sSouthern%20California!5e0!3m2!1sen!2sus!4v1716000000000"
+            width="100%" height="380" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" title="Mech on Wheels service area map"></iframe>
+        </div>
+        <div>
+          <h3 style="color:var(--text-heading);margin-bottom:20px;">Areas We Cover</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;">
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Irvine</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Anaheim</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Santa Ana</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Long Beach</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Fullerton</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Garden Grove</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Costa Mesa</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Huntington Beach</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Torrance</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Compton</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Los Angeles</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> San Diego</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Chula Vista</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Escondido</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> El Cajon</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Oceanside</div>
+            <div style="color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;"><span style="color:var(--accent);">✓</span> Vista</div>
+          </div>
+          <div style="margin-top:28px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+            <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">Not sure if we cover your area?</p>
+            <a href="tel:7147244696" class="btn btn-primary" style="display:inline-block;width:100%;text-align:center;">📞 Call to Check Coverage</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
