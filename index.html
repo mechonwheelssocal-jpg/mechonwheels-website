@@ -133,8 +133,8 @@
     }
 
     .btn-secondary:hover {
-      border-color: var(--accent);
-      background: rgba(249, 115, 22, 0.05);
+      border-color: var(--accent-hover);
+      background: rgba(147, 51, 234, 0.05);
     }
 
     /* Nav */
@@ -212,7 +212,7 @@
       min-height: 90vh;
       display: flex;
       align-items: center;
-      background: radial-gradient(circle at center top, rgba(58, 130, 246, 0.1) 0%, transparent 60%),
+      background: radial-gradient(circle at center top, rgba(147, 51, 234, 0.15) 0%, transparent 60%),
         linear-gradient(to bottom, var(--bg-dark), var(--bg-alt));
       border-bottom: 1px solid var(--border);
     }
@@ -308,7 +308,7 @@
     }
 
     .diagnostic-notice {
-      background: rgba(58, 130, 246, 0.08);
+      background: rgba(147, 51, 234, 0.08);
       border-left: 4px solid var(--accent);
       padding: 16px 24px;
       border-radius: 0 var(--radius) var(--radius) 0;
@@ -513,6 +513,16 @@
       }
     }
   </style>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>" />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mechonwheels.info" />
+  <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
+  <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
+  <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
+
 </head>
 
 <body>
@@ -700,12 +710,12 @@
         <form action="https://formspree.io/f/xkoqzval" method="POST" id="bookingForm">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" autocomplete="name" required>
           </div>
           <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div>
               <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone number" required>
+              <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone number" autocomplete="tel" required>
             </div>
             <div>
               <label for="location">City / Zip Code</label>
@@ -785,7 +795,7 @@
       </div>
       <div class="footer-bottom">
         <span>&copy;
-          <script>document.write(new Date().getFullYear())</script> Mech on Wheels. All rights reserved.
+          <span id="copyright-year"></span> Mech on Wheels. All rights reserved.
         </span>
         <span>Southern California</span>
       </div>
@@ -864,7 +874,7 @@
       if (year && make) {
         try {
           // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
-          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}/vehicleType/passenger%20car?format=json`);
+          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
           if (data.Results && data.Results.length > 0) {
@@ -946,8 +956,9 @@
 
     form.addEventListener("submit", handleSubmit);
   </script>
+  <script>
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+  </script>
 </body>
 
 </html>
-<!-- continue where we left off
-  -->
