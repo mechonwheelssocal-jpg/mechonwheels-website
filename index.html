@@ -43,6 +43,8 @@
 
     html {
       scroll-behavior: smooth;
+      /* Offset anchor targets so headings clear the fixed navbar */
+      scroll-padding-top: 90px;
     }
 
     body {
@@ -585,7 +587,7 @@
         <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
         <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
     </div>
   </nav>
 
@@ -1233,7 +1235,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1265,34 +1267,53 @@
 
   <script>
     // Simple mobile menu toggle logic
-    document.querySelector('.menu-toggle').addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    function openMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', function () {
       if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
+        closeMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
+        openMenu();
       }
+    });
+
+    // Close the mobile menu after tapping a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) closeMenu();
+      });
     });
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
     });
 
