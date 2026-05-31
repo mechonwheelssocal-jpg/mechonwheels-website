@@ -7,6 +7,7 @@
   <title>Mech on Wheels | Professional Mobile Diagnostics & Repair</title>
   <meta name="description"
     content="Mech on Wheels provides professional mobile mechanic services, accurate diagnostics, and quality repairs throughout Southern California." />
+  <link rel="canonical" href="https://mechonwheels.info/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -532,6 +533,12 @@
   <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
+  <meta name="twitter:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
+  <meta name="twitter:image" content="https://mechonwheels.info/logo_purple.jpg" />
 
   <!-- LocalBusiness Structured Data -->
   <script type="application/ld+json">
@@ -1265,21 +1272,42 @@
 
   <script>
     // Simple mobile menu toggle logic
-    document.querySelector('.menu-toggle').addEventListener('click', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    function openMobileMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMobileMenu() {
+      document.querySelector('.nav-links').style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.addEventListener('click', function () {
       const navLinks = document.querySelector('.nav-links');
       if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
+        closeMobileMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
+        openMobileMenu();
       }
+    });
+
+    // Close the mobile menu after a nav link is tapped
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) closeMobileMenu();
+      });
     });
 
     // Handle window resize to reset menu
@@ -1291,8 +1319,9 @@
         document.querySelector('.nav-links').style.background = 'transparent';
         document.querySelector('.nav-links').style.padding = '0';
         document.querySelector('.nav-links').style.borderBottom = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        closeMobileMenu();
       }
     });
 
@@ -1334,12 +1363,15 @@
 
       if (year && make) {
         try {
-          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+          // Fetch all models for the make/year directly from the U.S. NHTSA VPIC API
           const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
           if (data.Results && data.Results.length > 0) {
-            data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
+            // NHTSA can return duplicate model names — dedupe and sort for a clean list
+            const models = [...new Set(data.Results.map(item => item.Model_Name))].sort();
+            models.forEach(name => modelSelect.add(new Option(name, name)));
+            modelSelect.add(new Option("Other (Not Listed)", "Other"));
           } else {
             modelSelect.add(new Option("Other (Not Listed)", "Other"));
           }
