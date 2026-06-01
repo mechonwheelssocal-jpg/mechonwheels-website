@@ -574,7 +574,7 @@
   <nav>
     <div class="container nav-container">
       <a href="#" class="logo">Mech on Wheels</a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="primary-nav">
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
@@ -585,7 +585,7 @@
         <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
         <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">☰</button>
     </div>
   </nav>
 
@@ -1265,34 +1265,56 @@
 
   <script>
     // Simple mobile menu toggle logic
-    document.querySelector('.menu-toggle').addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    function openMobileMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMobileMenu() {
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', function () {
       if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
+        closeMobileMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
+        openMobileMenu();
       }
+    });
+
+    // Close the mobile menu after tapping a nav link so it doesn't cover the target section
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
     });
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
     });
 
@@ -1335,7 +1357,7 @@
       if (year && make) {
         try {
           // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
-          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}?format=json`);
+          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
           if (data.Results && data.Results.length > 0) {
