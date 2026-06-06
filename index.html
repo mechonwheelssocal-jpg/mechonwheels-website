@@ -43,6 +43,8 @@
 
     html {
       scroll-behavior: smooth;
+      /* Offset anchor jumps so headings aren't hidden under the fixed nav */
+      scroll-padding-top: 90px;
     }
 
     body {
@@ -513,6 +515,15 @@
       }
     }
 
+    /* FAQ accordion: hide default marker (Safari/Chrome) and rotate the arrow when open */
+    #faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #faq-list details[open] summary span {
+      transform: rotate(180deg);
+    }
+
     /* Reviews & Map responsive */
     @media (max-width: 768px) {
       #service-area .container > div > div:first-child + div {
@@ -801,7 +812,7 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" maxlength="17" minlength="17" pattern="[A-HJ-NPR-Za-hj-npr-z0-9]{17}" title="A VIN is 17 characters and does not contain the letters I, O, or Q." style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1280,6 +1291,15 @@
         navLinks.style.padding = '20px 0';
         navLinks.style.borderBottom = '1px solid var(--border)';
       }
+    });
+
+    // Close the mobile menu after tapping a link so the target isn't hidden behind the open menu
+    document.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          document.querySelector('.nav-links').style.display = 'none';
+        }
+      });
     });
 
     // Handle window resize to reset menu
