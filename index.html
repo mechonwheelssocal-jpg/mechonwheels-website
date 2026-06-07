@@ -7,6 +7,7 @@
   <title>Mech on Wheels | Professional Mobile Diagnostics & Repair</title>
   <meta name="description"
     content="Mech on Wheels provides professional mobile mechanic services, accurate diagnostics, and quality repairs throughout Southern California." />
+  <link rel="canonical" href="https://mechonwheels.info/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -513,6 +514,19 @@
       }
     }
 
+    /* FAQ Accordion */
+    #faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #faq-list summary::marker {
+      content: "";
+    }
+
+    #faq-list details[open] summary span {
+      transform: rotate(180deg);
+    }
+
     /* Reviews & Map responsive */
     @media (max-width: 768px) {
       #service-area .container > div > div:first-child + div {
@@ -532,6 +546,12 @@
   <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
+  <meta name="twitter:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
+  <meta name="twitter:image" content="https://mechonwheels.info/logo_purple.jpg" />
 
   <!-- LocalBusiness Structured Data -->
   <script type="application/ld+json">
@@ -1233,7 +1253,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1280,6 +1300,15 @@
         navLinks.style.padding = '20px 0';
         navLinks.style.borderBottom = '1px solid var(--border)';
       }
+    });
+
+    // Close the mobile menu after tapping a nav link
+    document.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          document.querySelector('.nav-links').style.display = 'none';
+        }
+      });
     });
 
     // Handle window resize to reset menu
@@ -1396,6 +1425,8 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
