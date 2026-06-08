@@ -94,6 +94,12 @@
       padding: 100px 0;
     }
 
+    /* Offset anchor scroll so fixed nav doesn't cover section headings */
+    section[id],
+    [id="service-area"] {
+      scroll-margin-top: 90px;
+    }
+
     .section-alt {
       background-color: var(--bg-alt);
       border-top: 1px solid var(--border);
@@ -513,6 +519,11 @@
       }
     }
 
+    /* Rotate FAQ disclosure arrow when open */
+    #faq details[open] summary span {
+      transform: rotate(180deg);
+    }
+
     /* Reviews & Map responsive */
     @media (max-width: 768px) {
       #service-area .container > div > div:first-child + div {
@@ -585,7 +596,7 @@
         <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
         <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
     </div>
   </nav>
 
@@ -1265,21 +1276,44 @@
 
   <script>
     // Simple mobile menu toggle logic
-    document.querySelector('.menu-toggle').addEventListener('click', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    function openMobileMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMobileMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', function () {
       const navLinks = document.querySelector('.nav-links');
       if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
+        closeMobileMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
+        openMobileMenu();
       }
+    });
+
+    // Close the mobile menu after tapping a nav link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
     });
 
     // Handle window resize to reset menu
@@ -1293,6 +1327,7 @@
         document.querySelector('.nav-links').style.borderBottom = 'none';
       } else {
         document.querySelector('.nav-links').style.display = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
