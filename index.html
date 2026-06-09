@@ -43,6 +43,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 90px;
     }
 
     body {
@@ -482,6 +483,19 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.85rem;
+    }
+
+    /* FAQ accordion — hide native marker, rotate custom chevron when open */
+    #faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #faq-list summary::marker {
+      content: "";
+    }
+
+    #faq-list details[open] summary span {
+      transform: rotate(180deg);
     }
 
     /* Responsive */
@@ -1282,6 +1296,15 @@
       }
     });
 
+    // Close the mobile menu after tapping a link
+    document.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          document.querySelector('.nav-links').style.display = 'none';
+        }
+      });
+    });
+
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
@@ -1335,7 +1358,7 @@
       if (year && make) {
         try {
           // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
-          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}?format=json`);
+          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
           if (data.Results && data.Results.length > 0) {
