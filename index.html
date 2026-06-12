@@ -533,6 +533,15 @@
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
 
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
+  <meta name="twitter:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
+  <meta name="twitter:image" content="https://mechonwheels.info/logo_purple.jpg" />
+
+  <!-- Theme color for mobile browser chrome -->
+  <meta name="theme-color" content="#0a0a0f" />
+
   <!-- LocalBusiness Structured Data -->
   <script type="application/ld+json">
   {
@@ -574,7 +583,7 @@
   <nav>
     <div class="container nav-container">
       <a href="#" class="logo">Mech on Wheels</a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
@@ -582,10 +591,10 @@
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#reviews">Reviews</a></li>
-        <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
+        <li><a href="tel:+17147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
         <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
-      <button class="menu-toggle" aria-label="Open menu">☰</button>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">☰</button>
     </div>
   </nav>
 
@@ -600,7 +609,7 @@
           solutions, not guesswork—providing dealership-level troubleshooting and honest mechanical repairs.
         </p>
         <div class="hero-btns">
-          <a href="tel:7147244696" class="btn btn-primary">📞 Call Now</a>
+          <a href="tel:+17147244696" class="btn btn-primary">📞 Call Now</a>
           <a href="#contact" class="btn btn-secondary">Request Service</a>
         </div>
         <p style="margin-top:14px;font-size:0.85rem;color:var(--text-muted);">Or <a href="#contact" style="color:var(--accent);text-decoration:underline;">submit a service request</a> and we'll call you back.</p>
@@ -742,7 +751,7 @@
 
         <div class="contact-info-block">
           <h4>Phone</h4>
-          <a href="tel:7147244696">(714) 724-4696</a>
+          <a href="tel:+17147244696">(714) 724-4696</a>
         </div>
         <div class="contact-info-block">
           <h4>Email</h4>
@@ -801,7 +810,7 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" maxlength="17" autocomplete="off" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -867,7 +876,7 @@
           <strong style="color:var(--text-main);">Not sure what you need?</strong>
           <p style="color:var(--text-muted);font-size:0.9rem;margin:4px 0 0;">Call or submit a request and describe what your vehicle is doing. We'll give you a straight answer on what it likely needs before any money changes hands.</p>
         </div>
-        <a href="tel:7147244696" class="btn btn-primary" style="white-space:nowrap;">📞 (714) 724-4696</a>
+        <a href="tel:+17147244696" class="btn btn-primary" style="white-space:nowrap;">📞 (714) 724-4696</a>
       </div>
     </div>
   </section>
@@ -1224,7 +1233,7 @@
           </div>
           <div style="margin-top:28px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
             <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">Not sure if we cover your area?</p>
-            <a href="tel:7147244696" class="btn btn-primary" style="display:inline-block;width:100%;text-align:center;">📞 Call to Check Coverage</a>
+            <a href="tel:+17147244696" class="btn btn-primary" style="display:inline-block;width:100%;text-align:center;">📞 Call to Check Coverage</a>
           </div>
         </div>
       </div>
@@ -1264,35 +1273,58 @@
   </footer>
 
   <script>
-    // Simple mobile menu toggle logic
-    document.querySelector('.menu-toggle').addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
+    // Mobile menu toggle logic
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    function openMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', function () {
       if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
+        closeMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
+        openMenu();
       }
     });
 
-    // Handle window resize to reset menu
+    // Close the mobile menu after tapping a link so it doesn't cover the page
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+          closeMenu();
+        }
+      });
+    });
+
+    // Reset menu styles when crossing the desktop breakpoint
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.width = 'auto';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
+      } else if (navLinks.style.display !== 'flex') {
+        navLinks.style.display = 'none';
       }
     });
 
