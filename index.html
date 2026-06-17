@@ -1233,7 +1233,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1353,7 +1353,12 @@
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
           if (data.Results && data.Results.length > 0) {
-            data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
+            const seen = new Set();
+            data.Results
+              .map(item => item.Model_Name)
+              .filter(name => name && !seen.has(name) && seen.add(name))
+              .sort()
+              .forEach(name => modelSelect.add(new Option(name, name)));
           } else {
             modelSelect.add(new Option("Other (Not Listed)", "Other"));
           }
@@ -1363,6 +1368,16 @@
           modelSelect.disabled = false;
         }
       }
+    }
+
+    function resetVehicleSelector() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      makeSelect.disabled = true;
+      modelSelect.disabled = true;
+      toggleVehicleInput();
     }
 
     function toggleVehicleInput() {
@@ -1410,6 +1425,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleSelector();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
