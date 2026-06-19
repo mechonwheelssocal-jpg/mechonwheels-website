@@ -136,9 +136,10 @@ To update the site, edit `index.html` and push to `main`. Changes are live withi
 - **No comments** in JS unless the logic is non-obvious. CSS comments are used to label major sections.
 - **No frameworks.** Do not introduce React, Vue, jQuery, or any npm package. This is intentional — the site must remain a single deployable HTML file.
 - **No build step.** Do not add webpack, Vite, or any bundler.
-- **External dependencies** (only two, both CDN):
+- **External dependencies** (three, all CDN):
   - Google Fonts Inter — loaded in `<head>` via `<link>`
   - NHTSA VPIC API — called at runtime via `fetch()` in `fetchModels()`
+  - Google Analytics 4 — inline loader in `<head>`; stays dormant until the `G-XXXXXXXXXX` placeholder Measurement ID is replaced with a real one
 - When adding new sections, follow the existing pattern: `.section` class for padding, `.section-alt` for the alternating dark background, `.uppercase-label` for eyebrow text above headings.
 
 ---
