@@ -529,7 +529,7 @@
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mechonwheels.info" />
+  <meta property="og:url" content="https://mechonwheels.info/" />
   <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
@@ -1372,7 +1372,7 @@
 
       if (year && make) {
         try {
-          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+          // Fetch all models for the selected make/year from the U.S. NHTSA vPIC API
           const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
