@@ -1383,7 +1383,8 @@
           }
           modelSelect.disabled = false;
         } catch(err) {
-          modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+          modelSelect.innerHTML = '<option value="">Model</option>';
+          modelSelect.add(new Option("Other (Not Listed)", "Other"));
           modelSelect.disabled = false;
         }
       }
