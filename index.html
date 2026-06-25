@@ -1320,18 +1320,17 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu. Clearing the inline styles on desktop
+    // lets the CSS layout take back over, and aria-expanded is reset in both
+    // branches so the toggle's state never desyncs from the visible menu.
     window.addEventListener('resize', function () {
+      const navLinks = document.querySelector('.nav-links');
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        navLinks.removeAttribute('style');
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
+      menuToggle.setAttribute('aria-expanded', 'false');
     });
 
     // Formspree AJAX Submission
