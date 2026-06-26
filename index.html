@@ -825,7 +825,7 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" maxlength="17" autocapitalize="characters" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1372,7 +1372,7 @@
 
       if (year && make) {
         try {
-          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+          // Fetch all models for the selected make/year from the U.S. NHTSA VPIC API
           const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
@@ -1434,6 +1434,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
