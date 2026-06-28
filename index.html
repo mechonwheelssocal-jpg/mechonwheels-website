@@ -1288,24 +1288,39 @@
   </footer>
 
   <script>
-    // Simple mobile menu toggle logic
+    // Mobile menu toggle logic
     const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    function openMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    // Drop all inline styles so the stylesheet controls the desktop layout
+    function resetToDesktop() {
+      navLinks.removeAttribute('style');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
     menuToggle.addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
-      if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-        menuToggle.setAttribute('aria-expanded', 'false');
+      if (menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
-        menuToggle.setAttribute('aria-expanded', 'true');
+        openMenu();
       }
     });
 
@@ -1313,24 +1328,17 @@
     document.querySelectorAll('.nav-links a').forEach(function (link) {
       link.addEventListener('click', function () {
         if (window.innerWidth <= 768) {
-          const navLinks = document.querySelector('.nav-links');
-          navLinks.style.display = 'none';
-          menuToggle.setAttribute('aria-expanded', 'false');
+          closeMenu();
         }
       });
     });
 
-    // Handle window resize to reset menu
+    // Only restore the desktop layout when crossing above the breakpoint.
+    // Below 768px we leave the menu state alone so address-bar resize events
+    // (common while scrolling on mobile) don't force an open menu shut.
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        resetToDesktop();
       }
     });
 
