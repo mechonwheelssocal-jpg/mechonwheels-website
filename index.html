@@ -1257,7 +1257,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1331,6 +1331,7 @@
         document.querySelector('.nav-links').style.borderBottom = 'none';
       } else {
         document.querySelector('.nav-links').style.display = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -1372,18 +1373,28 @@
 
       if (year && make) {
         try {
-          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+          // Fetch models from the U.S. NHTSA VPIC API for the selected make/year
           const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
           if (data.Results && data.Results.length > 0) {
-            data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
-          } else {
-            modelSelect.add(new Option("Other (Not Listed)", "Other"));
+            // NHTSA returns duplicates across vehicle types — de-dupe before listing
+            const seen = new Set();
+            data.Results.forEach(item => {
+              const name = item.Model_Name;
+              if (name && !seen.has(name)) {
+                seen.add(name);
+                modelSelect.add(new Option(name, name));
+              }
+            });
           }
+          // Always allow a fallback so unlisted models can still be requested
+          modelSelect.add(new Option("Other (Not Listed)", "Other"));
           modelSelect.disabled = false;
         } catch(err) {
-          modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+          // On failure, fall back to a usable option instead of an invalid "Error" value
+          modelSelect.innerHTML = '<option value="">Model</option>';
+          modelSelect.add(new Option("Other (Not Listed)", "Other"));
           modelSelect.disabled = false;
         }
       }
