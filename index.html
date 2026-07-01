@@ -598,7 +598,7 @@
   <nav>
     <div class="container nav-container">
       <a href="#" class="logo">Mech on Wheels</a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="primary-nav">
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
@@ -609,7 +609,7 @@
         <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
         <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
-      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">☰</button>
     </div>
   </nav>
 
@@ -1320,17 +1320,25 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Reset the menu only when the viewport actually crosses the mobile breakpoint.
+    // (Mobile browsers fire "resize" while scrolling as the address bar hides/shows;
+    // acting on every event would force an open menu closed mid-scroll.)
+    let wasDesktop = window.innerWidth > 768;
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+      const isDesktop = window.innerWidth > 768;
+      if (isDesktop === wasDesktop) return;
+      wasDesktop = isDesktop;
+      const navLinks = document.querySelector('.nav-links');
+      if (isDesktop) {
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
