@@ -1257,7 +1257,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1434,10 +1434,15 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // reset() restores field values but does not fire change events —
+          // resync the vehicle UI so the year/make/model and VIN inputs match
+          // the reverted radio state instead of stranding the previous mode.
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
-            if (Object.hasOwn(data, 'errors')) {
-              status.innerText = data["errors"].map(error => error["message"]).join(", ");
+            if (data && Array.isArray(data.errors)) {
+              status.innerText = data.errors.map(error => error.message).join(", ");
             } else {
               status.innerText = "Oops! There was a problem submitting your form.";
             }
