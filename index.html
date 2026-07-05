@@ -1389,6 +1389,20 @@
       }
     }
 
+    // form.reset() clears field values but leaves the JS-driven show/hide,
+    // disabled states, and dynamically added <option>s in place. Restore the
+    // vehicle selector to its initial state so mode and UI stay in sync.
+    function resetVehicleSelection() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      makeSelect.disabled = true;
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+      document.getElementById("vinInput").value = "";
+      toggleVehicleInput();
+    }
+
     function toggleVehicleInput() {
       const isVin = document.querySelector('input[name="_vehicle_type"]:checked').value === "vin";
       document.getElementById('vehicle-dropdowns').style.display = isVin ? "none" : "flex";
@@ -1434,6 +1448,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleSelection();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
