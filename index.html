@@ -1372,7 +1372,7 @@
 
       if (year && make) {
         try {
-          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+          // Fetch all models for the selected make/year from the U.S. NHTSA VPIC API
           const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
           const data = await res.json();
           modelSelect.innerHTML = '<option value="">Model</option>';
@@ -1398,6 +1398,20 @@
       document.getElementById('vehicleMake').required = !isVin;
       document.getElementById('vehicleModel').required = !isVin;
       document.getElementById('vinInput').required = isVin;
+    }
+
+    // Reset the vehicle selector back to its initial state (used after a
+    // successful submission so the UI, disabled states, and required flags
+    // stay in sync with the reset radio buttons).
+    function resetVehicleSelector() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      makeSelect.disabled = true;
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+      document.getElementById("vinInput").value = "";
+      toggleVehicleInput();
     }
 
     // Initialize logic
@@ -1434,6 +1448,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleSelector();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
