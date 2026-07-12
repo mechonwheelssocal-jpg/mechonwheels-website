@@ -598,7 +598,7 @@
   <nav>
     <div class="container nav-container">
       <a href="#" class="logo">Mech on Wheels</a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="primary-nav">
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
@@ -609,7 +609,7 @@
         <li><a href="tel:7147244696" class="nav-cta" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:6px;font-weight:600;text-decoration:none;">📞 Call Now</a></li>
         <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
       </ul>
-      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">☰</button>
     </div>
   </nav>
 
@@ -1366,26 +1366,30 @@
       const year = yearSelect.value;
       const make = document.getElementById("vehicleMake").value;
       const modelSelect = document.getElementById("vehicleModel");
-      
+
+      if (!year || !make) {
+        modelSelect.innerHTML = '<option value="">Model</option>';
+        modelSelect.disabled = true;
+        return;
+      }
+
       modelSelect.innerHTML = '<option value="">Loading Models...</option>';
       modelSelect.disabled = true;
 
-      if (year && make) {
-        try {
-          // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
-          const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
-          const data = await res.json();
-          modelSelect.innerHTML = '<option value="">Model</option>';
-          if (data.Results && data.Results.length > 0) {
-            data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
-          } else {
-            modelSelect.add(new Option("Other (Not Listed)", "Other"));
-          }
-          modelSelect.disabled = false;
-        } catch(err) {
-          modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
-          modelSelect.disabled = false;
+      try {
+        // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+        const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
+        const data = await res.json();
+        modelSelect.innerHTML = '<option value="">Model</option>';
+        if (data.Results && data.Results.length > 0) {
+          data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
+        } else {
+          modelSelect.add(new Option("Other (Not Listed)", "Other"));
         }
+        modelSelect.disabled = false;
+      } catch (err) {
+        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.disabled = false;
       }
     }
 
