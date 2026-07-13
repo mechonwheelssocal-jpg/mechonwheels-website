@@ -44,6 +44,8 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+      /* Offset for the fixed navbar so anchored sections aren't hidden beneath it */
     }
 
     body {
@@ -512,6 +514,15 @@
       .section {
         padding: 80px 0;
       }
+    }
+
+    /* FAQ open/close indicator */
+    #faq-list details summary span {
+      transition: transform 0.2s;
+    }
+
+    #faq-list details[open] summary span {
+      transform: rotate(180deg);
     }
 
     /* Reviews & Map responsive */
@@ -1322,15 +1333,21 @@
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
+      const navLinks = document.querySelector('.nav-links');
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
+        // Clear the mobile-menu positioning so it doesn't distort the desktop nav
+        navLinks.style.top = '';
+        navLinks.style.left = '';
+        navLinks.style.width = '';
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
     });
 
