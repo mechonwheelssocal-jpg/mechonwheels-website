@@ -812,20 +812,20 @@
 
             <!-- Dropdown Section -->
             <div id="vehicle-dropdowns" style="display: flex; flex-wrap: wrap; gap: 12px;">
-              <select id="vehicleYear" class="form-control" onchange="updateMakes()" style="flex: 1; min-width: 80px;" required>
+              <select id="vehicleYear" class="form-control" onchange="updateMakes()" style="flex: 1; min-width: 80px;" aria-label="Vehicle year" required>
                 <option value="">Year</option>
               </select>
-              <select id="vehicleMake" class="form-control" onchange="fetchModels()" style="flex: 1; min-width: 100px;" required disabled>
+              <select id="vehicleMake" class="form-control" onchange="fetchModels()" style="flex: 1; min-width: 100px;" aria-label="Vehicle make" required disabled>
                 <option value="">Make</option>
               </select>
-              <select id="vehicleModel" class="form-control" style="flex: 1; min-width: 100px;" required disabled>
+              <select id="vehicleModel" class="form-control" style="flex: 1; min-width: 100px;" aria-label="Vehicle model" required disabled>
                 <option value="">Model</option>
               </select>
             </div>
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" aria-label="Vehicle VIN" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1322,15 +1322,21 @@
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
+      const navLinks = document.querySelector('.nav-links');
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
+        // Clear the inline overrides applied when the mobile menu was opened
+        navLinks.style.width = '';
+        navLinks.style.top = '';
+        navLinks.style.left = '';
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
     });
 
@@ -1388,7 +1394,8 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        // Empty value so `required` still blocks submission instead of sending "Error" as the model
+        modelSelect.innerHTML = '<option value="">Could not load models — retry or enter VIN</option>';
         modelSelect.disabled = false;
       }
     }
@@ -1402,6 +1409,18 @@
       document.getElementById('vehicleMake').required = !isVin;
       document.getElementById('vehicleModel').required = !isVin;
       document.getElementById('vinInput').required = isVin;
+    }
+
+    // form.reset() restores the radios to their default but does not fire a change
+    // event, so re-sync the vehicle UI (visibility, required flags, make/model lists).
+    function resetVehicleFields() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      makeSelect.disabled = true;
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+      toggleVehicleInput();
     }
 
     // Initialize logic
@@ -1438,6 +1457,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleFields();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
