@@ -499,16 +499,18 @@
       }
     }
 
-    @media (max-width: 768px) {
+    /* Collapse the nav to a hamburger before the links (9 items) overflow the bar */
+    @media (max-width: 900px) {
       .nav-links {
         display: none;
       }
 
-      /* Add JS for mobile menu in production */
       .menu-toggle {
         display: block;
       }
+    }
 
+    @media (max-width: 768px) {
       .section {
         padding: 80px 0;
       }
@@ -1312,7 +1314,7 @@
     // Close the mobile menu after tapping a nav link
     document.querySelectorAll('.nav-links a').forEach(function (link) {
       link.addEventListener('click', function () {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 900) {
           const navLinks = document.querySelector('.nav-links');
           navLinks.style.display = 'none';
           menuToggle.setAttribute('aria-expanded', 'false');
@@ -1322,7 +1324,7 @@
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 900) {
         document.querySelector('.nav-links').style.display = 'flex';
         document.querySelector('.nav-links').style.flexDirection = 'row';
         document.querySelector('.nav-links').style.position = 'static';
