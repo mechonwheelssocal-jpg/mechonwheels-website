@@ -1322,16 +1322,15 @@
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
+      const navLinks = document.querySelector('.nav-links');
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        // Clear the inline overrides so the desktop CSS takes over cleanly
+        navLinks.style.cssText = '';
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
+      // The menu is never left open across a resize, so keep the toggle state in sync
+      menuToggle.setAttribute('aria-expanded', 'false');
     });
 
     // Formspree AJAX Submission
@@ -1388,7 +1387,7 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.innerHTML = '<option value="">Could not load models — try VIN</option>';
         modelSelect.disabled = false;
       }
     }
