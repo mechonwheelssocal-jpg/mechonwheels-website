@@ -514,6 +514,11 @@
       }
     }
 
+    /* FAQ: hide the native disclosure marker so only the custom ▾ shows */
+    #faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
     /* Reviews & Map responsive */
     @media (max-width: 768px) {
       #service-area .container > div > div:first-child + div {
@@ -1320,17 +1325,15 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize: restore the desktop layout when the viewport grows
+    // past the breakpoint. Below it, leave the menu's open/closed state to the
+    // toggle button so spurious resize events (e.g. the mobile address bar
+    // showing/hiding on scroll) don't snap an open menu shut.
     window.addEventListener('resize', function () {
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.removeAttribute('style');
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -1388,7 +1391,10 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        // API unreachable — fall back to a usable option so the request can
+        // still be submitted rather than sending a bogus "Error" model value.
+        modelSelect.innerHTML = '<option value="">Model</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
@@ -1438,6 +1444,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          toggleVehicleInput(); // resync vehicle inputs to the reset radio state
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
