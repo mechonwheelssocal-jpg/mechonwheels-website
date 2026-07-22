@@ -1438,6 +1438,11 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // Re-sync the vehicle selector UI after reset: form.reset() reverts the
+          // _vehicle_type radio to its default but leaves the visible input, the
+          // required flags, and the make/model cascade in their prior state.
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
