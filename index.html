@@ -1404,6 +1404,18 @@
       document.getElementById('vinInput').required = isVin;
     }
 
+    // Resync the vehicle inputs after a native form.reset(), which clears
+    // values but leaves JS-set display/disabled/required state untouched.
+    function resetVehicleInputs() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      makeSelect.disabled = true;
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+      toggleVehicleInput();
+    }
+
     // Initialize logic
     toggleVehicleInput();
     // -- END VEHICLE LOGIC --
@@ -1438,6 +1450,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleInputs();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
