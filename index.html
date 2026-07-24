@@ -1438,6 +1438,11 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // Re-sync the vehicle selector after reset: rebuild the Make/Model
+          // dropdowns to their disabled defaults and restore the display and
+          // required-field state to match the reset radio (default: dropdowns).
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
