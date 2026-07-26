@@ -514,6 +514,11 @@
       }
     }
 
+    /* FAQ chevron rotates when its <details> is open */
+    #faq-list details[open] summary > span {
+      transform: rotate(180deg);
+    }
+
     /* Reviews & Map responsive */
     @media (max-width: 768px) {
       #service-area .container > div > div:first-child + div {
@@ -825,7 +830,7 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" maxlength="17" autocomplete="off" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
