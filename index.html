@@ -44,6 +44,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 90px;
     }
 
     body {
@@ -1320,18 +1321,13 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu. Clearing the inline styles restores
+    // the CSS-defined state for whichever breakpoint we land on (flex row on
+    // desktop, hidden on mobile) and avoids stale inline props leaking across
+    // breakpoints. Keep aria-expanded in sync with the closed state.
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
-      }
+      document.querySelector('.nav-links').removeAttribute('style');
+      menuToggle.setAttribute('aria-expanded', 'false');
     });
 
     // Formspree AJAX Submission
@@ -1438,6 +1434,9 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // form.reset() reverts the radios to "Select Vehicle" default; resync
+          // the visible section and required flags to match.
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
