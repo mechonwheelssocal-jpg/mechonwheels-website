@@ -825,7 +825,11 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN"
+                maxlength="17" minlength="17" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                pattern="[A-HJ-NPR-Za-hj-npr-z0-9]{17}"
+                title="A VIN is 17 characters — letters and numbers only, excluding I, O, and Q."
+                style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1388,7 +1392,8 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.innerHTML = '<option value="">Model (couldn\'t load list)</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
