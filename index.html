@@ -1322,15 +1322,15 @@
 
     // Handle window resize to reset menu
     window.addEventListener('resize', function () {
+      const navLinks = document.querySelector('.nav-links');
       if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+        // Clear every inline style the mobile menu applied so the desktop
+        // CSS (display:flex, row layout) takes over cleanly. Setting only a
+        // subset left stale width/top/left values that distorted the nav.
+        navLinks.removeAttribute('style');
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
     });
 
