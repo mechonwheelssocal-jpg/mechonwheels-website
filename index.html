@@ -825,7 +825,7 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" maxlength="17" autocomplete="off" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1257,7 +1257,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1320,17 +1320,25 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu — only act when the mobile/desktop
+    // breakpoint is actually crossed, so an open mobile menu isn't forced shut
+    // by the resize events that fire while scrolling (address bar show/hide).
+    let wasDesktop = window.innerWidth > 768;
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+      const isDesktop = window.innerWidth > 768;
+      if (isDesktop === wasDesktop) return;
+      wasDesktop = isDesktop;
+      const navLinks = document.querySelector('.nav-links');
+      if (isDesktop) {
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
