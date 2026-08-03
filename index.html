@@ -529,10 +529,16 @@
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mechonwheels.info" />
+  <meta property="og:url" content="https://mechonwheels.info/" />
   <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
+  <meta name="twitter:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
+  <meta name="twitter:image" content="https://mechonwheels.info/logo_purple.jpg" />
 
   <!-- LocalBusiness Structured Data -->
   <script type="application/ld+json">
@@ -563,6 +569,64 @@
     },
     "sameAs": [
       "https://www.yelp.com/biz/mech-on-wheels-westminster"
+    ]
+  }
+  </script>
+
+  <!-- FAQ Structured Data (mirrors the on-page FAQ section for rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do you come to my location?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — that's the whole point. We travel to your home, workplace, or roadside location throughout Orange County, Los Angeles, and San Diego County. If you're unsure whether we cover your exact area, just call and we'll tell you straight."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What vehicles do you work on?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most makes and models — domestic and import. Cars, trucks, SUVs, and vans. If you have a specialty vehicle or aren't sure, describe it when you reach out and we'll be upfront about whether it's a good fit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I still pay the diagnostic fee if I get the repair done?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The diagnostic fee is waived when you proceed with the repair. You pay for the repair, not both."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if you can't fix it on the spot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We'll tell you exactly what it needs and why we can't complete it on-site — whether it's a specialty tool, a lift, or a part that needs to be sourced. You'll leave with documented findings and honest next steps, not guesswork."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are you available nights and weekends?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We operate Monday–Saturday 9AM–5PM and Sunday 9AM–4PM as standard hours. For urgent situations, reach out directly — we've helped customers late at night and on holidays when it was possible."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you use OEM or aftermarket parts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "OEM-minded procedures and quality parts are the standard here. We'll discuss options with you — OEM or quality aftermarket — and you make the call. No upselling, no unnecessary parts."
+        }
+      }
     ]
   }
   </script>
@@ -825,7 +889,10 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN"
+                maxlength="17" minlength="17" pattern="[A-HJ-NPR-Za-hj-npr-z0-9]{17}"
+                title="A VIN is 17 characters (letters and numbers, excluding I, O, and Q)."
+                autocomplete="off" autocapitalize="characters" spellcheck="false" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1388,7 +1455,7 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.innerHTML = '<option value="">Could not load models — type it in the concern box</option>';
         modelSelect.disabled = false;
       }
     }
@@ -1438,6 +1505,10 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // Re-sync the vehicle selector to the reset form state so the UI and
+          // the required flags don't get stuck in the previous (e.g. VIN) mode.
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
