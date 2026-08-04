@@ -514,6 +514,15 @@
       }
     }
 
+    /* FAQ accordion chevron */
+    #faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #faq-list details[open] summary span {
+      transform: rotate(180deg);
+    }
+
     /* Reviews & Map responsive */
     @media (max-width: 768px) {
       #service-area .container > div > div:first-child + div {
@@ -1320,8 +1329,13 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu.
+    // Guard against height-only resizes: mobile browsers fire 'resize' when the
+    // URL bar hides/shows during scroll, which would otherwise snap an open menu shut.
+    let prevWidth = window.innerWidth;
     window.addEventListener('resize', function () {
+      if (window.innerWidth === prevWidth) return;
+      prevWidth = window.innerWidth;
       if (window.innerWidth > 768) {
         document.querySelector('.nav-links').style.display = 'flex';
         document.querySelector('.nav-links').style.flexDirection = 'row';
