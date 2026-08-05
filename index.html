@@ -523,6 +523,15 @@
         grid-template-columns: 1fr !important;
       }
     }
+
+    /* FAQ disclosure widgets */
+    #faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #faq-list details[open] summary span {
+      transform: rotate(180deg);
+    }
   </style>
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>" />
@@ -1257,7 +1266,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
