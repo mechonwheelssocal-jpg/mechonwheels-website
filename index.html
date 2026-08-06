@@ -529,7 +529,7 @@
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mechonwheels.info" />
+  <meta property="og:url" content="https://mechonwheels.info/" />
   <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
@@ -1331,6 +1331,7 @@
         document.querySelector('.nav-links').style.borderBottom = 'none';
       } else {
         document.querySelector('.nav-links').style.display = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
