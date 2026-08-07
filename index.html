@@ -1257,7 +1257,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1320,18 +1320,14 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu.
+    // Clearing all inline styles lets the stylesheet take over cleanly:
+    // >768px -> .nav-links renders as the desktop flex row, <=768px -> hidden.
+    // (Setting only a few properties left stale width/top/left from the open
+    // mobile menu, which broke the desktop nav layout after a resize.)
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
-      }
+      document.querySelector('.nav-links').removeAttribute('style');
+      menuToggle.setAttribute('aria-expanded', 'false');
     });
 
     // Formspree AJAX Submission
@@ -1377,7 +1373,9 @@
       modelSelect.disabled = true;
 
       try {
-        // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+        // Fetch models for the selected make/year from the U.S. NHTSA vPIC API.
+        // No vehicleType filter is applied on purpose so trucks, SUVs, and vans
+        // are included alongside passenger cars.
         const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
         const data = await res.json();
         modelSelect.innerHTML = '<option value="">Model</option>';
