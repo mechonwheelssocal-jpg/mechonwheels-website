@@ -1388,7 +1388,8 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.innerHTML = '<option value="">Could not load models — choose below</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
@@ -1438,6 +1439,8 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
