@@ -499,16 +499,18 @@
       }
     }
 
-    @media (max-width: 768px) {
+    /* Collapse the nav to a hamburger before the full row can overflow (~769–1024px) */
+    @media (max-width: 1024px) {
       .nav-links {
         display: none;
       }
 
-      /* Add JS for mobile menu in production */
       .menu-toggle {
         display: block;
       }
+    }
 
+    @media (max-width: 768px) {
       .section {
         padding: 80px 0;
       }
@@ -812,20 +814,20 @@
 
             <!-- Dropdown Section -->
             <div id="vehicle-dropdowns" style="display: flex; flex-wrap: wrap; gap: 12px;">
-              <select id="vehicleYear" class="form-control" onchange="updateMakes()" style="flex: 1; min-width: 80px;" required>
+              <select id="vehicleYear" class="form-control" onchange="updateMakes()" style="flex: 1; min-width: 80px;" aria-label="Vehicle year" required>
                 <option value="">Year</option>
               </select>
-              <select id="vehicleMake" class="form-control" onchange="fetchModels()" style="flex: 1; min-width: 100px;" required disabled>
+              <select id="vehicleMake" class="form-control" onchange="fetchModels()" style="flex: 1; min-width: 100px;" aria-label="Vehicle make" required disabled>
                 <option value="">Make</option>
               </select>
-              <select id="vehicleModel" class="form-control" style="flex: 1; min-width: 100px;" required disabled>
+              <select id="vehicleModel" class="form-control" style="flex: 1; min-width: 100px;" aria-label="Vehicle model" required disabled>
                 <option value="">Model</option>
               </select>
             </div>
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;" aria-label="Vehicle identification number (VIN)">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1257,7 +1259,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1288,49 +1290,54 @@
   </footer>
 
   <script>
-    // Simple mobile menu toggle logic
+    // Mobile menu toggle logic. Keep this breakpoint in sync with the
+    // max-width used to reveal .menu-toggle in the CSS above.
+    const MOBILE_BREAKPOINT = 1024;
     const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    function openMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
     menuToggle.addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
-      if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-        menuToggle.setAttribute('aria-expanded', 'false');
+      if (menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
-        menuToggle.setAttribute('aria-expanded', 'true');
+        openMenu();
       }
     });
 
     // Close the mobile menu after tapping a nav link
     document.querySelectorAll('.nav-links a').forEach(function (link) {
       link.addEventListener('click', function () {
-        if (window.innerWidth <= 768) {
-          const navLinks = document.querySelector('.nav-links');
-          navLinks.style.display = 'none';
-          menuToggle.setAttribute('aria-expanded', 'false');
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
+          closeMenu();
         }
       });
     });
 
-    // Handle window resize to reset menu
+    // On resize into the desktop range, drop the inline styles so the CSS
+    // layout takes over. Below the breakpoint we leave the menu state alone
+    // so it doesn't slam shut when the mobile URL bar fires a resize event.
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        navLinks.removeAttribute('style');
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -1388,7 +1395,8 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.innerHTML = '<option value="">Model</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
@@ -1438,6 +1446,10 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // Re-sync the vehicle picker: reset() restores the radio and fields
+          // but not the dependent dropdown state, panel visibility, or required flags.
+          updateMakes();
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
