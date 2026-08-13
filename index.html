@@ -529,7 +529,7 @@
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mechonwheels.info" />
+  <meta property="og:url" content="https://mechonwheels.info/" />
   <meta property="og:title" content="Mech on Wheels | Mobile Mechanic — Southern California" />
   <meta property="og:description" content="Professional mobile diagnostics &amp; repair. We come to you — OC &amp; LA." />
   <meta property="og:image" content="https://mechonwheels.info/logo_purple.jpg" />
@@ -825,7 +825,7 @@
 
             <!-- VIN Section -->
             <div id="vehicle-vin" style="display: none;">
-              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" style="text-transform: uppercase;">
+              <input type="text" id="vinInput" class="form-control" placeholder="Enter 17-digit VIN" maxlength="17" autocomplete="off" autocapitalize="characters" style="text-transform: uppercase;">
               <p style="font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; color: var(--text-muted);">We'll decode the rest.</p>
             </div>
 
@@ -1320,17 +1320,26 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu.
+    // Only act when the mobile/desktop breakpoint is actually crossed, so the
+    // frequent resize events mobile browsers fire (URL bar collapsing on scroll,
+    // on-screen keyboard opening) don't force an open menu closed mid-scroll.
+    let wasDesktop = window.innerWidth > 768;
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+      const isDesktop = window.innerWidth > 768;
+      if (isDesktop === wasDesktop) return;
+      wasDesktop = isDesktop;
+      const navLinks = document.querySelector('.nav-links');
+      if (isDesktop) {
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
