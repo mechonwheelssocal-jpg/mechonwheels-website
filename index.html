@@ -1288,49 +1288,74 @@
   </footer>
 
   <script>
-    // Simple mobile menu toggle logic
+    // Mobile menu toggle logic
     const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const MOBILE_BREAKPOINT = 768;
+
+    function openMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+      menuToggle.setAttribute('aria-label', 'Close menu');
+    }
+
+    function closeMenu() {
+      navLinks.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Open menu');
+    }
+
+    function resetToDesktopNav() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'row';
+      navLinks.style.position = 'static';
+      navLinks.style.top = '';
+      navLinks.style.left = '';
+      navLinks.style.width = '';
+      navLinks.style.background = 'transparent';
+      navLinks.style.padding = '0';
+      navLinks.style.borderBottom = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Open menu');
+    }
+
     menuToggle.addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
-      if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-        menuToggle.setAttribute('aria-expanded', 'false');
+      if (menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
-        menuToggle.setAttribute('aria-expanded', 'true');
+        openMenu();
       }
     });
 
     // Close the mobile menu after tapping a nav link
-    document.querySelectorAll('.nav-links a').forEach(function (link) {
+    navLinks.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
-        if (window.innerWidth <= 768) {
-          const navLinks = document.querySelector('.nav-links');
-          navLinks.style.display = 'none';
-          menuToggle.setAttribute('aria-expanded', 'false');
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
+          closeMenu();
         }
       });
     });
 
-    // Handle window resize to reset menu
+    // Only react when the viewport actually crosses the mobile/desktop
+    // breakpoint. On mobile, scrolling collapses the browser chrome and fires
+    // a resize event; reacting to every resize would slam an open menu shut.
+    let isDesktop = window.innerWidth > MOBILE_BREAKPOINT;
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+      const nowDesktop = window.innerWidth > MOBILE_BREAKPOINT;
+      if (nowDesktop === isDesktop) return;
+      isDesktop = nowDesktop;
+      if (nowDesktop) {
+        resetToDesktopNav();
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        closeMenu();
       }
     });
 
@@ -1404,6 +1429,20 @@
       document.getElementById('vinInput').required = isVin;
     }
 
+    // Restore the vehicle inputs to their initial state. Native form.reset()
+    // clears values but leaves the JS-populated Make/Model options, the VIN
+    // field, and the dropdown/VIN visibility out of sync — fix those here.
+    function resetVehicleInputs() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      makeSelect.disabled = true;
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+      document.getElementById("vinInput").value = "";
+      toggleVehicleInput();
+    }
+
     // Initialize logic
     toggleVehicleInput();
     // -- END VEHICLE LOGIC --
@@ -1438,6 +1477,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleInputs();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
