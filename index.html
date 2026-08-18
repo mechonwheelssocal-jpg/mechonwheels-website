@@ -1320,17 +1320,25 @@
       });
     });
 
-    // Handle window resize to reset menu
+    // Handle window resize to reset menu. Only act when the viewport actually
+    // crosses the 768px breakpoint — mobile browsers fire 'resize' when the
+    // address bar collapses on scroll, and reacting to those would force an
+    // open hamburger menu closed mid-scroll.
+    let isMobileViewport = window.innerWidth <= 768;
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
+      const nowMobile = window.innerWidth <= 768;
+      if (nowMobile === isMobileViewport) return;
+      isMobileViewport = nowMobile;
+      const navLinks = document.querySelector('.nav-links');
+      if (!nowMobile) {
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'row';
+        navLinks.style.position = 'static';
+        navLinks.style.background = 'transparent';
+        navLinks.style.padding = '0';
+        navLinks.style.borderBottom = 'none';
       } else {
-        document.querySelector('.nav-links').style.display = 'none';
+        navLinks.style.display = 'none';
       }
     });
 

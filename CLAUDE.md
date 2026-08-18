@@ -84,7 +84,7 @@ Two modes toggled by radio buttons:
 2. Make select populated from a hardcoded `popularMakes` array (35 brands)
 3. Model select fetched from the **NHTSA API**:
    ```
-   https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/{make}/modelyear/{year}/vehicleType/passenger%20car?format=json
+   https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/{make}/modelyear/{year}?format=json
    ```
 4. Before submission, `#vehicleData` is set to `"YYYY Make Model"`
 
