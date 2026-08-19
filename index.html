@@ -44,6 +44,8 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+      /* Offset anchored sections so headings clear the fixed navbar */
     }
 
     body {
@@ -1329,6 +1331,7 @@
         document.querySelector('.nav-links').style.background = 'transparent';
         document.querySelector('.nav-links').style.padding = '0';
         document.querySelector('.nav-links').style.borderBottom = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
         document.querySelector('.nav-links').style.display = 'none';
       }
@@ -1382,13 +1385,16 @@
         const data = await res.json();
         modelSelect.innerHTML = '<option value="">Model</option>';
         if (data.Results && data.Results.length > 0) {
-          data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
+          const models = [...new Set(data.Results.map(item => item.Model_Name))].sort();
+          models.forEach(model => modelSelect.add(new Option(model, model)));
+          modelSelect.add(new Option("Other (Not Listed)", "Other"));
         } else {
           modelSelect.add(new Option("Other (Not Listed)", "Other"));
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        modelSelect.innerHTML = '<option value="">Model (lookup unavailable)</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
