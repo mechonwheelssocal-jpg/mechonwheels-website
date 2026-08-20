@@ -1438,9 +1438,17 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // form.reset() flips the vehicle-type radio back to its default,
+          // so restore the vehicle selector UI to match (clear stale Make/Model
+          // options and re-sync which panel is shown).
+          document.getElementById("vehicleMake").innerHTML = '<option value="">Make</option>';
+          document.getElementById("vehicleMake").disabled = true;
+          document.getElementById("vehicleModel").innerHTML = '<option value="">Model</option>';
+          document.getElementById("vehicleModel").disabled = true;
+          toggleVehicleInput();
         } else {
           return response.json().then(data => {
-            if (Object.hasOwn(data, 'errors')) {
+            if (data && Array.isArray(data.errors)) {
               status.innerText = data["errors"].map(error => error["message"]).join(", ");
             } else {
               status.innerText = "Oops! There was a problem submitting your form.";
