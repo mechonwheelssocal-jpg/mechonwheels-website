@@ -1257,7 +1257,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="container border-t pt-10">
+    <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
           <h2 style="font-size: 1.25rem;">Mech on Wheels</h2>
@@ -1377,18 +1377,20 @@
       modelSelect.disabled = true;
 
       try {
-        // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+        // Models come from the public U.S. NHTSA vPIC API. No vehicleType filter is
+        // applied, so trucks, SUVs, and vans are returned alongside passenger cars.
         const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
+        if (!res.ok) throw new Error(`NHTSA responded ${res.status}`);
         const data = await res.json();
         modelSelect.innerHTML = '<option value="">Model</option>';
-        if (data.Results && data.Results.length > 0) {
-          data.Results.forEach(item => modelSelect.add(new Option(item.Model_Name, item.Model_Name)));
-        } else {
-          modelSelect.add(new Option("Other (Not Listed)", "Other"));
-        }
+        const uniqueModels = [...new Set((data.Results || []).map(item => item.Model_Name).filter(Boolean))].sort();
+        uniqueModels.forEach(name => modelSelect.add(new Option(name, name)));
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        // Keep the form usable if the lookup fails — let the customer proceed with "Other".
+        modelSelect.innerHTML = '<option value="">Model</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
