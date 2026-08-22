@@ -1329,6 +1329,7 @@
         document.querySelector('.nav-links').style.background = 'transparent';
         document.querySelector('.nav-links').style.padding = '0';
         document.querySelector('.nav-links').style.borderBottom = 'none';
+        menuToggle.setAttribute('aria-expanded', 'false');
       } else {
         document.querySelector('.nav-links').style.display = 'none';
       }
@@ -1404,6 +1405,20 @@
       document.getElementById('vinInput').required = isVin;
     }
 
+    // Restore the vehicle selects to their initial, consistent state.
+    // form.reset() reverts values but does not re-run the change handlers,
+    // so without this the Make/Model dropdowns stay enabled with stale
+    // options after a successful submission even though Year is empty.
+    function resetVehicleFields() {
+      const makeSelect = document.getElementById("vehicleMake");
+      const modelSelect = document.getElementById("vehicleModel");
+      makeSelect.innerHTML = '<option value="">Make</option>';
+      makeSelect.disabled = true;
+      modelSelect.innerHTML = '<option value="">Model</option>';
+      modelSelect.disabled = true;
+      toggleVehicleInput();
+    }
+
     // Initialize logic
     toggleVehicleInput();
     // -- END VEHICLE LOGIC --
@@ -1438,6 +1453,7 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          resetVehicleFields();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
