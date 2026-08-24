@@ -1290,47 +1290,53 @@
   <script>
     // Simple mobile menu toggle logic
     const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const NAV_INLINE_PROPS = ['display', 'flexDirection', 'position', 'top', 'left', 'width', 'background', 'padding', 'borderBottom'];
+
+    function openMenu() {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.width = '100%';
+      navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
+      navLinks.style.padding = '20px 0';
+      navLinks.style.borderBottom = '1px solid var(--border)';
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    // Clearing the inline overrides lets the stylesheet reassert the correct
+    // layout for the current breakpoint (flex row on desktop, hidden on mobile).
+    function closeMenu() {
+      NAV_INLINE_PROPS.forEach(function (prop) { navLinks.style[prop] = ''; });
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
     menuToggle.addEventListener('click', function () {
-      const navLinks = document.querySelector('.nav-links');
-      if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-        menuToggle.setAttribute('aria-expanded', 'false');
+      if (menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
       } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = 'rgba(18, 20, 24, 0.95)';
-        navLinks.style.padding = '20px 0';
-        navLinks.style.borderBottom = '1px solid var(--border)';
-        menuToggle.setAttribute('aria-expanded', 'true');
+        openMenu();
       }
     });
 
     // Close the mobile menu after tapping a nav link
-    document.querySelectorAll('.nav-links a').forEach(function (link) {
+    navLinks.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
-        if (window.innerWidth <= 768) {
-          const navLinks = document.querySelector('.nav-links');
-          navLinks.style.display = 'none';
-          menuToggle.setAttribute('aria-expanded', 'false');
-        }
+        if (window.innerWidth <= 768) closeMenu();
       });
     });
 
-    // Handle window resize to reset menu
+    // Only reset the menu when the viewport actually crosses the 768px
+    // breakpoint. Mobile browsers fire spurious resize events while scrolling
+    // (URL bar show/hide), and reacting to those would close an open menu.
+    let isDesktopViewport = window.innerWidth > 768;
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 768) {
-        document.querySelector('.nav-links').style.display = 'flex';
-        document.querySelector('.nav-links').style.flexDirection = 'row';
-        document.querySelector('.nav-links').style.position = 'static';
-        document.querySelector('.nav-links').style.background = 'transparent';
-        document.querySelector('.nav-links').style.padding = '0';
-        document.querySelector('.nav-links').style.borderBottom = 'none';
-      } else {
-        document.querySelector('.nav-links').style.display = 'none';
+      const nowDesktop = window.innerWidth > 768;
+      if (nowDesktop !== isDesktopViewport) {
+        isDesktopViewport = nowDesktop;
+        closeMenu();
       }
     });
 
@@ -1377,7 +1383,7 @@
       modelSelect.disabled = true;
 
       try {
-        // Fetch models directly from the U.S. NHTSA API (Filtered for US Passenger Cars/Trucks)
+        // Fetch models directly from the U.S. NHTSA vPIC API (all vehicle types for the make/year)
         const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(make)}/modelyear/${year}?format=json`);
         const data = await res.json();
         modelSelect.innerHTML = '<option value="">Model</option>';
@@ -1388,7 +1394,10 @@
         }
         modelSelect.disabled = false;
       } catch (err) {
-        modelSelect.innerHTML = '<option value="Error">Could not load models</option>';
+        // Network/API failure: let the customer proceed with a valid selection
+        // rather than submitting a placeholder like "Error" as the model.
+        modelSelect.innerHTML = '<option value="">Model</option>';
+        modelSelect.add(new Option("Other (Not Listed)", "Other"));
         modelSelect.disabled = false;
       }
     }
@@ -1438,6 +1447,10 @@
           status.innerText = "Thanks! Your request has been sent successfully. We'll get back to you soon.";
           status.className = "form-status success";
           form.reset();
+          // Resync the vehicle picker to its default state after reset so the
+          // VIN panel and stale make/model options don't linger.
+          toggleVehicleInput();
+          updateMakes();
         } else {
           return response.json().then(data => {
             if (Object.hasOwn(data, 'errors')) {
